@@ -142,7 +142,7 @@ workflows:
     jobs:
       - vue-unit-test
       - vue-coverage
-      - vue-build-tme
+      - vue-build-tme:
           filters:
           branches:
             ignore:
