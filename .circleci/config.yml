@@ -144,9 +144,9 @@ workflows:
       - vue-coverage
       - vue-build-tme:
           filters:
-          branches:
-            ignore:
-              - main
+            branches:
+              ignore:
+                - main
       - vue-deploy-tme:
           requires:
             - vue-unit-test
