@@ -1,0 +1,170 @@
+# Docs : https://circleci.com/docs/2.0/configuration-reference
+# Orb: https://circleci.com/developer/orbs/orb/circleci/node
+# Docker executor: https://circleci.com/docs/2.0/executor-types/
+# Convenience Images: https://circleci.com/developer/images/image/cimg/node
+
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+  codecov: codecov/codecov@3.2.2
+
+jobs:
+  vue-unit-test:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      # - node/install-packages:
+      #     pkg-manager: npm
+      # - run:
+      #     name: Run tests with JUnit as reporter
+      #     command: npx jest --ci --runInBand --reporters=default --reporters=jest-junit
+      #     no_output_timeout: 1m
+      #     environment:
+      #       JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      # - store_test_results:
+      #     path: ./reports/junit/
+      # - store_artifacts:
+      #     path: ./reports/junit
+
+  vue-coverage:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      # - node/install-packages:
+      #     pkg-manager: npm
+      # - run:
+      #     name: Run coverage tests
+      #     command: npx jest --runInBand --coverage
+      #     no_output_timeout: 1m
+      # - codecov/upload
+
+  vue-build-tme:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build image
+          command: docker build . -t tme-vue --build-arg AUTH0_CLIENTID=$TME_AUTH0_CLIENTID
+      - run:
+          name: Push to Google Artifact Registry
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud auth configure-docker $GCR
+            docker tag tme-vue $TME_TAG:$CIRCLE_SHA1
+            docker tag tme-vue $TME_TAG:$CIRCLE_BUILD_NUM
+            docker tag tme-vue $TME_TAG:$(echo -n $CIRCLE_BRANCH | sed 's%/%_%g')
+            docker push        $TME_TAG
+
+  vue-deploy-tme:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Login to GCP
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+      - run:
+          name: Deploy to Cloud Run - vue-tme
+          command: |
+            gcloud run deploy vue-tme \
+              --image=$TME_TAG:$CIRCLE_SHA1 \
+              --region=europe-west1 \
+              --service-account=vue-tme@trigpointinguk.iam.gserviceaccount.com \
+              --allow-unauthenticated \
+              --port=80 \
+              --memory=1Gi \
+              --max-instances=1 \
+              --min-instances=0
+      - run:
+          name: Retag image
+          command: gcloud artifacts docker tags add $TME_TAG:$CIRCLE_SHA1 $TME_TAG:tme
+
+  vue-build-tuk:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build image
+          command: docker build . -t tuk-vue --build-arg AUTH0_CLIENTID=$TUK_AUTH0_CLIENTID
+      - run:
+          name: Push to Google Artifact Registry
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud auth configure-docker $GCR
+            docker tag tuk-vue $TUK_TAG:$CIRCLE_SHA1
+            docker tag tuk-vue $TUK_TAG:$CIRCLE_BUILD_NUM
+            docker tag tuk-vue $TUK_TAG:$(echo -n $CIRCLE_BRANCH | sed 's%/%_%g')
+            docker push        $TUK_TAG
+
+  vue-deploy-tuk:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Login to GCP
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+      - run:
+          name: Deploy to Cloud Run - vue-tuk
+          command: |
+            gcloud run deploy vue-tuk \
+              --image=$TUK_TAG:$CIRCLE_SHA1 \
+              --region=europe-west1 \
+              --service-account=vue-tuk@trigpointinguk.iam.gserviceaccount.com \
+              --allow-unauthenticated \
+              --port=80 \
+              --memory=1Gi \
+              --max-instances=1 \
+              --min-instances=0
+      - run:
+          name: Retag image
+          command: gcloud artifacts docker tags add $TUK_TAG:$CIRCLE_SHA1 $TUK_TAG:tuk
+
+workflows:
+  oncommit:
+    jobs:
+      - vue-unit-test
+      - vue-coverage
+      - vue-build-tme:
+          filters:
+            branches:
+              ignore:
+                - main
+      - vue-deploy-tme:
+          requires:
+            - vue-unit-test
+            - vue-build-tme
+          filters:
+            branches:
+              ignore:
+                - main
+      - vue-build-tuk:
+          filters:
+            branches:
+              only:
+                - main
+      - vue-deploy-tuk:
+          requires:
+            - vue-unit-test
+            - vue-build-tuk
+          filters:
+            branches:
+              only:
+                - main
