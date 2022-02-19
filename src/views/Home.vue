@@ -4,7 +4,7 @@
       <img :src="logo" width="150" height="124" border="0" alt="T:UK logo" />
     </div>
     <div class="col col-12 col-md-9">
-      <h1>{{ site }} - T:UK Development System</h1>
+      <h1>{{ sitename }}</h1>
       <p id="welcome">
         Welcome! This site is the testbed for developing the next generation of
         the TrigpointingUK codebase. If you are interested in trigpointing,
@@ -41,7 +41,9 @@ import HomeMessages from '@/components/HomeMessages.vue'
 import HomeRecentLogs from '@/components/HomeRecentLogs.vue'
 import HomeContent from '@/components/HomeContent.vue'
 import Hero from '@/components/Hero.vue'
+import { inject } from 'vue'
 
 var logo
 logo = require('../assets/' + process.env.VUE_APP_LOGO)
+const sitename = inject('sitename')
 </script>

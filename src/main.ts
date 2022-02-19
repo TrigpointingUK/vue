@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const app = createApp(App)
 app.use(store)
 app.use(router)
-app.config.globalProperties.site = process.env.VUE_APP_SITE
 app.provide('sitename', process.env.VUE_APP_SITE)
 
 app.mount('#app')
