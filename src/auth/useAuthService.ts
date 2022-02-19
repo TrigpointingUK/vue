@@ -81,6 +81,7 @@ const logout = (o?: LogoutOptions) => auth0Client.logout(o)
 
 const initializeAuth = async (
   options: Auth0ClientOptions,
+  // eslint-disable-next-line
   onRedirectCallback: (appState?: any) => void = DEFAULT_REDIRECT_CALLBACK,
   redirectUri: string = window.location.origin,
 ) => {
@@ -109,6 +110,7 @@ const initializeAuth = async (
   }
 }
 
+// eslint-disable-next-line
 export const useAuth = () => {
   return {
     isAuthenticated: computed(() => state.isAuthenticated),

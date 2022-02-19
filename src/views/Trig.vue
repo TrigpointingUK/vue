@@ -9,6 +9,10 @@
       :waypoint="waypoint"
       description="Blank"
     />
+    <div>
+      <router-link :to="prevlink">prev={{ trigid - 1 }}</router-link>
+      <router-link :to="nextlink">next={{ trigid + 1 }}</router-link>
+    </div>
     <p>API response {{ response }}</p>
   </div>
 </template>
@@ -48,6 +52,12 @@ export default defineComponent({
       while (strNum.length < 4) strNum = '0' + strNum
       return 'WP' + strNum
     },
+    nextlink(): string {
+      return '/trig/' + ((this.trigid || 0) + 1)
+    },
+    prevlink(): string {
+      return '/trig/' + ((this.trigid || 0) - 1)
+    },
   },
 
   created() {
@@ -70,7 +80,6 @@ export default defineComponent({
       if (trigid && !this.authloading) {
         try {
           // Get the access token from the auth wrapper
-          console.log(useAuth())
           const token = await useAuth().getTokenSilently()
           const response = await axios.get(
             `${process.env.VUE_APP_TUK_API}/trigs/${trigid}`,

@@ -1,47 +1,34 @@
 <template>
-   <div id="app">
-    <nav-bar />
+  <div id="app">
+    <NavBar />
     <div class="container-xxl">
-      <error />
+      <Error />
       <div class="mt-0">
         <router-view />
       </div>
     </div>
-    <tuk-footer />
+    <TukFooter />
   </div>
 </template>
 
-
-<script lang="ts">
-import { defineComponent, onMounted } from 'vue'
-import {useAuth} from '@/auth/useAuthService'
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useAuth } from '@/auth/useAuthService'
 import NavBar from '@/components/NavBar.vue'
 import TukFooter from '@/components/TukFooter.vue'
 import Error from '@/components/Error.vue'
 
-export default defineComponent({
-  components: {       
-    NavBar,
-    TukFooter,
-    Error
-  },
-  setup() {
-    // You can import 'loading' here and show a global loader if that's more convenient 
-    const { initializeAuth } = useAuth();
-    onMounted(() =>
-      initializeAuth({
-        domain: process.env.VUE_APP_AUTH0_DOMAIN as string,
-        client_id: process.env.VUE_APP_AUTH0_CLIENTID as string,
-        audience: process.env.VUE_APP_AUTH0_AUDIENCE as string,
-        scope: 'openid profile email'
-      })
-    );
-  },
-})
+// You can import 'loading' here and show a global loader if that's more convenient
+const { initializeAuth } = useAuth()
+onMounted(() =>
+  initializeAuth({
+    domain: process.env.VUE_APP_AUTH0_DOMAIN as string,
+    client_id: process.env.VUE_APP_AUTH0_CLIENTID as string,
+    audience: process.env.VUE_APP_AUTH0_AUDIENCE as string,
+    scope: 'openid profile email',
+  }),
+)
 </script>
-
-
-
 
 <style>
 #app {
