@@ -5,6 +5,12 @@ import store from './store'
 
 // Install Bootstrap5
 import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-createApp(App).use(store).use(router).mount('#app')
+const app = createApp(App)
+app.use(store)
+app.use(router)
+app.config.globalProperties.site = process.env.VUE_APP_SITE
+app.provide('sitename', process.env.VUE_APP_SITE)
+
+app.mount('#app')
