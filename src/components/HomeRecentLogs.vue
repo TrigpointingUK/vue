@@ -70,7 +70,6 @@ export default defineComponent({
           `${process.env.VUE_APP_TUK_API}/logs/recent`,
         )
         this.logs = response.data
-        console.log(this.logs)
       } finally {
         this.loading = false
       }

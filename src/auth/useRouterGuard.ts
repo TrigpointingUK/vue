@@ -1,31 +1,40 @@
-import { watchEffect } from 'vue';
-import { RouteLocationNormalized } from 'vue-router';
-import { useAuth } from './useAuthService';
+import { watchEffect } from 'vue'
+import { RouteLocationNormalized } from 'vue-router'
+import { useAuth } from './useAuthService'
 
 // Uses boolean return and thus requires Vue 3 router.
-export const useRouteGuard = (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
-    const { isAuthenticated, loading, loginWithRedirect } = useAuth();
+// eslint-disable-next-line
+export const useRouteGuard = (
+  to: RouteLocationNormalized,
+  // eslint-disable-next-line
+  from: RouteLocationNormalized,
+) => {
+  const { isAuthenticated, loading, loginWithRedirect } = useAuth()
 
-    const verify = () => {
-        // If the user is authenticated, continue with the route
-        if (isAuthenticated.value) {
-            return true
-        }
-
-        // Otherwise, log in
-        loginWithRedirect({ appState: { targetUrl: to.fullPath } })
-        return false;
+  const verify = () => {
+    console.log('verifying')
+    // If the user is authenticated, continue with the route
+    if (isAuthenticated.value) {
+      console.log('isAuthenticated')
+      return true
     }
 
-    // If loading has already finished, check our auth state using `verify()`
-    if (!loading.value) {
-        return verify()
-    }
+    console.log(to)
+    // Otherwise, log in
+    console.log('loginWithRedirect')
+    loginWithRedirect({ appState: { targetUrl: to.fullPath } })
+    return false
+  }
 
-    // Watch for the loading property to change before we check isAuthenticated
-    watchEffect(() => {
-        if (loading.value === false) {
-            return verify()
-        }
-    })
+  // If loading has already finished, check our auth state using `verify()`
+  if (!loading.value) {
+    return verify()
+  }
+
+  // Watch for the loading property to change before we check isAuthenticated
+  watchEffect(() => {
+    if (loading.value === false) {
+      return verify()
+    }
+  })
 }

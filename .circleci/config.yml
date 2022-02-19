@@ -60,7 +60,7 @@ jobs:
             docker tag tme-vue $TME_TAG:$CIRCLE_SHA1
             docker tag tme-vue $TME_TAG:$CIRCLE_BUILD_NUM
             docker tag tme-vue $TME_TAG:$(echo -n $CIRCLE_BRANCH | sed 's%/%_%g')
-            docker push        $TME_TAG
+            docker push --all-tags $TME_TAG
 
   vue-deploy-tme:
     docker:
@@ -108,7 +108,7 @@ jobs:
             docker tag tuk-vue $TUK_TAG:$CIRCLE_SHA1
             docker tag tuk-vue $TUK_TAG:$CIRCLE_BUILD_NUM
             docker tag tuk-vue $TUK_TAG:$(echo -n $CIRCLE_BRANCH | sed 's%/%_%g')
-            docker push        $TUK_TAG
+            docker push --all-tags $TUK_TAG
 
   vue-deploy-tuk:
     docker:

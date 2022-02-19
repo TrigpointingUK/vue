@@ -1,13 +1,9 @@
 <template>
   <div class="details">
-    <h1>Details  for {{ waypoint }}</h1>
+    <h1>Details for {{ waypoint }}</h1>
     <p>ID: {{ trigid }}</p>
     <p>Name: {{ name }}</p>
     <p>Description: {{ description }}</p>
-  </div>
-  <div>
-    <router-link :to="prevlink"> prev={{ trigid! - 1 }} </router-link>
-    <router-link :to="nextlink"> next={{ trigid! + 1 }} </router-link>
   </div>
 </template>
 
@@ -22,14 +18,6 @@ export default defineComponent({
     name: String,
     description: String,
   },
-  computed: {
-    nextlink() : string {
-      return "/trig/" + (this.trigid! + 1)
-    },
-    prevlink() : string {
-      return "/trig/" + (this.trigid! - 1)
-    },
-  }
 })
 </script>
 
