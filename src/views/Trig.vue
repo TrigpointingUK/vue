@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { useAuth } from '@/auth/useAuthService'
+import { useAuth0 } from '@auth0/auth0-vue'
 import { defineComponent } from 'vue'
 import TrigDetails from '@/components/TrigDetails.vue'
 import axios from 'axios'
@@ -42,7 +42,7 @@ export default defineComponent({
       name: '',
       response: '',
       loading: true,
-      authloading: useAuth().loading,
+      authloading: useAuth0().isLoading,
     }
   },
 
@@ -80,7 +80,7 @@ export default defineComponent({
       if (trigid && !this.authloading) {
         try {
           // Get the access token from the auth wrapper
-          const token = await useAuth().getTokenSilently()
+          const token = await useAuth0().getTokenSilently()
           const response = await axios.get(
             `${process.env.VUE_APP_TUK_API}/trigs/${trigid}`,
             {

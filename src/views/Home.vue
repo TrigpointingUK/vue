@@ -24,8 +24,6 @@
       <home-recent-logs />
       <hr class="mx-auto" width="10%" />
       <home-content />
-      <hr class="mx-auto" width="10%" />
-      <hero />
       <router-link to="/about">About</router-link>
     </div>
 
@@ -40,7 +38,6 @@ import SideBar from '@/components/SideBar.vue'
 import HomeMessages from '@/components/HomeMessages.vue'
 import HomeRecentLogs from '@/components/HomeRecentLogs.vue'
 import HomeContent from '@/components/HomeContent.vue'
-import Hero from '@/components/Hero.vue'
 import { inject } from 'vue'
 
 var logo

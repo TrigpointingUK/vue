@@ -12,22 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useAuth } from '@/auth/useAuthService'
 import NavBar from '@/components/NavBar.vue'
 import TukFooter from '@/components/TukFooter.vue'
 import Error from '@/components/Error.vue'
-
-// You can import 'loading' here and show a global loader if that's more convenient
-const { initializeAuth } = useAuth()
-onMounted(() =>
-  initializeAuth({
-    domain: process.env.VUE_APP_AUTH0_DOMAIN as string,
-    client_id: process.env.VUE_APP_AUTH0_CLIENTID as string,
-    audience: process.env.VUE_APP_AUTH0_AUDIENCE as string,
-    scope: 'openid profile email',
-  }),
-)
 </script>
 
 <style>
