@@ -2,7 +2,7 @@
   <nav class="navbar sticky-top navbar-expand-md" aria-label="navbar">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="/tuk_logo.gif" height="40" width="50" alt="T:UK" border="0" />
+        <img :src="logo" height="40" width="50" alt="T:UK" border="0" />
         <img
           src="/banner_logo.png"
           height="40"
@@ -122,35 +122,30 @@
   </nav>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  name: 'NavBar',
-  setup() {
-    const {
-      loginWithRedirect,
-      logout,
-      isAuthenticated,
-      isLoading,
-      user,
-    } = useAuth0()
-    const { push } = useRouter()
+const {
+  loginWithRedirect,
+  logout,
+  isAuthenticated,
+  isLoading,
+  user,
+} = useAuth0()
+const { push } = useRouter()
 
-    const logoutAndRedirect = async () => {
-      console.log('about to log out')
-      await logout({ federated: true })
-      console.log('logged out')
-      push({ path: '/about' })
-    }
+const logoutAndRedirect = async () => {
+  console.log('about to log out')
+  await logout({ federated: true })
+  console.log('logged out')
+  push({ path: '/about' })
+}
 
-    const login = () => loginWithRedirect()
+const login = () => loginWithRedirect()
 
-    return { login, logoutAndRedirect, isAuthenticated, isLoading, user }
-  },
-})
+var logo
+logo = require('../assets/' + process.env.VUE_APP_LOGO)
 </script>
 
 <style scoped>
