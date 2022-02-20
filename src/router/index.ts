@@ -42,11 +42,6 @@ const createRoutes: any = (app: any) => [
   },
 ]
 
-// const router = createRouter({
-//   history: createWebHistory(process.env.BASE_URL),
-//   routes,
-// })
-
 export const router = (app: any) =>
   createRouter({
     history: createWebHistory(process.env.BASE_URL),

@@ -80,7 +80,7 @@ export default defineComponent({
       if (trigid && !this.authloading) {
         try {
           // Get the access token from the auth wrapper
-          const token = await useAuth0().getTokenSilently()
+          const token = await this.$auth0.getAccessTokenSilently()
           const response = await axios.get(
             `${process.env.VUE_APP_TUK_API}/trigs/${trigid}`,
             {
