@@ -143,7 +143,7 @@ export default defineComponent({
       console.log('about to log out')
       await logout({ federated: true })
       console.log('logged out')
-      push({ path: '/' })
+      push({ path: '/about' })
     }
 
     const login = () => loginWithRedirect()
