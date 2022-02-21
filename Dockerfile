@@ -8,7 +8,7 @@ RUN npm install
 COPY ./ .
 RUN npx vue-cli-service build --mode $MODE
 
-FROM nginx as production-stage
+FROM nginx:alpine as production-stage
 RUN mkdir /app
 COPY --from=build-stage /app/dist /app
 COPY nginx.conf /etc/nginx/nginx.conf

@@ -18,21 +18,12 @@
 </template>
 
 <script lang="ts">
-import { useAuth } from '@/auth/useAuthService'
+import { useAuth0 } from '@auth0/auth0-vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  // async setup() {
-  // const { user, getIdTokenClaims } = useAuth()
-  // console.log('user')
-  // console.log(user)
-  // const tokens = await getIdTokenClaims()
-  // console.log('tokens')
-  // console.log(tokens)
-  // console.log('tokens-end')
-  // return { user, tokens }
   setup() {
-    const { user } = useAuth()
+    const { user } = useAuth0()
     console.log('user')
     console.log(user)
     return { user }
