@@ -140,6 +140,7 @@ const logoutAndRedirect = async () => {
   await logout({ federated: true })
   console.log('logged out')
   push({ path: '/about' })
+  // TODO: get this redirect working!
 }
 
 const login = () => loginWithRedirect()
