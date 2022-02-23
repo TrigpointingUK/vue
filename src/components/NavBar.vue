@@ -137,9 +137,9 @@ const { push } = useRouter()
 
 const logoutAndRedirect = async () => {
   console.log('about to log out')
-  await logout({ federated: true })
+  await logout({ federated: true, returnTo: '/about' })
   console.log('logged out')
-  push({ path: '/about' })
+  // push({ path: '/about' })
   // TODO: get this redirect working!
 }
 

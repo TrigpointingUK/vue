@@ -1,12 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  Router,
+  RouteRecordRaw,
+} from 'vue-router'
 import { createAuthGuard } from '@auth0/auth0-vue'
 import propsParser from 'vue-router-parse-props'
 import Home from '@/views/Home.vue'
 import Profile from '@/views/Profile.vue'
 import Trig from '@/views/Trig.vue'
+import { App } from 'vue'
 
 // const createRoutes: Array<RouteRecordRaw> = (app) => [
-const createRoutes: any = (app: any) => [
+const createRoutes = (app: App): RouteRecordRaw[] => [
   {
     path: '/',
     name: 'Home',
@@ -42,7 +48,7 @@ const createRoutes: any = (app: any) => [
   },
 ]
 
-export const router = (app: any) =>
+export const router = (app: App): Router =>
   createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes: createRoutes(app),
