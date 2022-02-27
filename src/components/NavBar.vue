@@ -136,9 +136,7 @@ const {
 const { push } = useRouter()
 
 const logoutAndRedirect = async () => {
-  console.log('about to log out')
   await logout({ federated: true, returnTo: process.env.VUE_APP_AUTH0_LOGOUT })
-  console.log('logged out')
 }
 
 const login = () => loginWithRedirect()
