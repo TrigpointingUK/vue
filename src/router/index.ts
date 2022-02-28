@@ -9,6 +9,7 @@ import propsParser from 'vue-router-parse-props'
 import Home from '@/views/Home.vue'
 import Profile from '@/views/Profile.vue'
 import Trig from '@/views/Trig.vue'
+import Auth0 from '@/views/Auth0.vue'
 import { App } from 'vue'
 
 // const createRoutes: Array<RouteRecordRaw> = (app) => [
@@ -17,6 +18,11 @@ const createRoutes = (app: App): RouteRecordRaw[] => [
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/auth0',
+    name: 'auth0',
+    component: Auth0,
   },
   {
     path: '/about',

@@ -124,7 +124,6 @@
 
 <script setup lang="ts">
 import { useAuth0 } from '@auth0/auth0-vue'
-import { useRouter } from 'vue-router'
 
 const {
   loginWithRedirect,
@@ -133,13 +132,14 @@ const {
   isLoading,
   user,
 } = useAuth0()
-const { push } = useRouter()
 
 const logoutAndRedirect = async () => {
   await logout({ federated: true, returnTo: process.env.VUE_APP_AUTH0_LOGOUT })
 }
 
-const login = () => loginWithRedirect()
+const login = () => {
+  loginWithRedirect()
+}
 
 var logo
 logo = require('../assets/' + process.env.VUE_APP_LOGO)
