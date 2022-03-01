@@ -53,9 +53,9 @@ jobs:
           command: docker build . -t tme-vue \
             --build-arg AUTH0_CLIENTID=$TME_AUTH0_CLIENTID \
             --build-arg MODE=development \
-            --build-arg VERSION=0.2.$CIRCLE_BUILD_NUM \
+            --build-arg VERSION="0.2.$CIRCLE_BUILD_NUM" \
             --build-arg SHA1=$CIRCLE_SHA1 \
-            --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”`
+            --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
       - run:
           name: Push to Google Artifact Registry
           command: |
@@ -106,9 +106,9 @@ jobs:
           command: docker build . -t tuk-vue \
             --build-arg AUTH0_CLIENTID=$TUK_AUTH0_CLIENTID \
             --build-arg MODE=production \
-            --build-arg VERSION=0.1.$CIRCLE_BUILD_NUM \
+            --build-arg VERSION="0.1.$CIRCLE_BUILD_NUM" \
             --build-arg SHA1=$CIRCLE_SHA1 \
-            --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”`
+            --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
       - run:
           name: Push to Google Artifact Registry
           command: |
