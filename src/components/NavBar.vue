@@ -143,7 +143,7 @@ const {
   user,
 } = useAuth0()
 
-const logoutAndRedirect = async (federated?: false) => {
+const logoutAndRedirect = async (federated = false) => {
   // federated: false redirects correctly and will not prompt for google account on next login
   // federated: true redirects to social media homepage after logout, prompts for account at next login
   await logout({
