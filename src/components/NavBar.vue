@@ -100,9 +100,19 @@
                   class="dropdown-item"
                   id="qsLogoutBtn"
                   href="#"
-                  @click.prevent="logoutAndRedirect"
+                  @click.prevent="logoutAndRedirect(false)"
                 >
                   Logout
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  id="qsLogoutBtn"
+                  href="#"
+                  @click.prevent="logoutAndRedirect(true)"
+                >
+                  Logout (social)
                 </a>
               </li>
             </ul>
@@ -124,7 +134,6 @@
 
 <script setup lang="ts">
 import { useAuth0 } from '@auth0/auth0-vue'
-import { useRouter } from 'vue-router'
 
 const {
   loginWithRedirect,
@@ -133,16 +142,19 @@ const {
   isLoading,
   user,
 } = useAuth0()
-const { push } = useRouter()
 
-const logoutAndRedirect = async () => {
-  console.log('about to log out')
-  await logout({ federated: true })
-  console.log('logged out')
-  push({ path: '/about' })
+const logoutAndRedirect = async (federated: boolean) => {
+  // federated: false redirects correctly and will not prompt for google account on next login
+  // federated: true redirects to social media homepage after logout, prompts for account at next login
+  await logout({
+    federated: federated,
+    returnTo: process.env.VUE_APP_AUTH0_LOGOUT,
+  })
 }
 
-const login = () => loginWithRedirect()
+const login = () => {
+  loginWithRedirect()
+}
 
 var logo
 logo = require('../assets/' + process.env.VUE_APP_LOGO)

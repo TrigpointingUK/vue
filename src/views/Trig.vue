@@ -101,10 +101,4 @@ export default defineComponent({
     },
   },
 })
-
-// function pad(num: string, size: number) {
-//   var strNum = num;
-//   while (strNum.length < size) strNum = "0" + strNum;
-//   return strNum;
-// }
 </script>
