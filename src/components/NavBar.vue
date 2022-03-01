@@ -105,6 +105,16 @@
                   Logout
                 </a>
               </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  id="qsLogoutBtn"
+                  href="#"
+                  @click.prevent="logoutAndRedirect(true)"
+                >
+                  Logout (federated)
+                </a>
+              </li>
             </ul>
           </li>
           <li v-if="!isAuthenticated && !isLoading">
@@ -133,8 +143,13 @@ const {
   user,
 } = useAuth0()
 
-const logoutAndRedirect = async () => {
-  await logout({ federated: false, returnTo: process.env.VUE_APP_AUTH0_LOGOUT })
+const logoutAndRedirect = async (federated?: false) => {
+  // federated: false redirects correctly and will not prompt for google account on next login
+  // federated: true redirects to social media homepage after logout, prompts for account at next login
+  await logout({
+    federated: federated,
+    returnTo: process.env.VUE_APP_AUTH0_LOGOUT,
+  })
 }
 
 const login = () => {
