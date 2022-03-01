@@ -112,7 +112,7 @@
                   href="#"
                   @click.prevent="logoutAndRedirect(true)"
                 >
-                  Logout (federated)
+                  Logout (social)
                 </a>
               </li>
             </ul>
