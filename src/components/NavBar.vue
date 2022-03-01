@@ -134,7 +134,7 @@ const {
 } = useAuth0()
 
 const logoutAndRedirect = async () => {
-  await logout({ federated: true, returnTo: process.env.VUE_APP_AUTH0_LOGOUT })
+  await logout({ federated: false, returnTo: process.env.VUE_APP_AUTH0_LOGOUT })
 }
 
 const login = () => {
