@@ -146,8 +146,6 @@ const {
 const logoutAndRedirect = async (federated: boolean) => {
   // federated: false redirects correctly and will not prompt for google account on next login
   // federated: true redirects to social media homepage after logout, prompts for account at next login
-  console.log('federated ' + federated)
-  await new Promise((r) => setTimeout(r, 2000))
   await logout({
     federated: federated,
     returnTo: process.env.VUE_APP_AUTH0_LOGOUT,
